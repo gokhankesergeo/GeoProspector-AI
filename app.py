@@ -38,7 +38,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ----------------- DİL SÖZLÜĞÜ (TRANSLATION DICTIONARY) -----------------
-# Bu mekanizma sayesinde tek tuşla tüm arayüz dili değişir.
 lang_dict = {
     "TR": {
         "title": "⛏️ GeoProspector-AI v22",
@@ -75,6 +74,7 @@ lang_dict = {
         "sec_3d": "📦 Sahadaki Gerçek Damar Geometrisine Göre Şekillenen 3B Arama Uzayı",
         "btn_csv": "📥 SONDAJ PLANI EXCEL (CSV) DOSYASINI İNDİR",
         "btn_json": "📥 TÜM TEKNİK JEOLOJİ RAPORUNU JSON OLARAK İNDİR",
+        "btn_pdf": "📄 TÜM TEKNİK RAPORU TEK SAYFA/PDF OLARAK İNDİR",
         "sec_section": "📐 Profesyonel Jeolojik Enine Kesit Haritası",
         "btn_png": "📥 KESİT GÖRSELİNİ İNDİR (PNG)",
         "sec_summary": "💼 Kurumsal Risk & Ekonomik Değerlendirme Yönetici Özeti",
@@ -120,6 +120,7 @@ lang_dict = {
         "sec_3d": "📦 3D Exploration Subspace Shaped by Field Vein Geometry",
         "btn_csv": "📥 EXPORT DRILL HOLE PROGRAM (CSV)",
         "btn_json": "📥 DOWNLOAD COMPLETE GEOLOGICAL REPORT (JSON)",
+        "btn_pdf": "📄 DOWNLOAD COMPLETE TECHNICAL REPORT (PDF/HTML)",
         "sec_section": "📐 Professional Geological Cross-Section Profile",
         "btn_png": "📥 DOWNLOAD CROSS-SECTION IMAGE (PNG)",
         "sec_summary": "💼 Corporate Risk & Economic Evaluation Executive Summary",
@@ -132,7 +133,7 @@ lang_dict = {
     }
 }
 
-# Dil Seçim Arayüzü (Sol Panel En Üstte)
+# Language Selector UI
 with st.sidebar:
     st.markdown("### 🌐 Language / Dil Seçimi")
     lang_choice = st.selectbox("Select Application Language:", ["TR", "EN"])
@@ -177,7 +178,6 @@ def ai_fused_geology_engine(api_key, uploaded_files, user_notes, lang):
         img.thumbnail((700, 700))
         processed_images.append(img)
 
-    # Yapay zekaya verileri hangi dilde üretmesi gerektiğini dinamik iletiyoruz.
     prompt = f"""
 You are a Senior Exploration Director with world-class expertise in JORC and NI 43-101 mineral exploration and resource reporting standards.
 You are provided with field photographs of outcrops, trenches, faults, or alteration zones, along with the geologist's field notes: '{user_notes}'
@@ -186,11 +186,11 @@ Analyze all uploaded images holistically and generate a comprehensive geological
 CRITICAL: You must generate all text fields within the JSON response strictly in the language code: '{lang}'.
 
 YOUR TASKS:
-1. GEOLOGICAL CONTEXT: Explain the main structural elements (faults, shear zones, fracture sets), color anomalies (gossan, limonitic yellow, jarosite, goethite, hematitic red), and their relationship with the mineralization mechanism.
-2. MINERAL PARAGENESIS: List primary and secondary minerals (Pyrite, Arsenopyrite, Chalcopyrite, Epidote, Garnet, Sphalerite, Galena, Malachite, etc.) with evidence based on the color/texture pixels in the photographs.
-3. PATHFINDER & GEOCHEMISTRY MATRIX: Identify the suspected deposit type (e.g., Orogenic Gold, Porphyry, Epithermal, etc.) and specify the primary and pathfinder element pairs, target anomalies, and diagnostic geochemical ratios required for multi-element ICP-MS laboratory analysis.
-4. JORC SAMPLING GUIDE: Guide the field geologist by detailing channel sampling widths, continuous sampling intervals, the technical role of grab samples, and QA/QC rules (use of CRM/Blanks) under JORC Table 1 standards.
-5. DRILL GRID: Design 5 non-overlapping asymmetric drill holes to test the hanging wall, footwall, along-strike continuity (left/right), and depth extensions.
+1. GEOLOGICAL CONTEXT: Explain the main structural elements (faults, shear zones, fracture sets), color anomalies, and their relationship with the mineralization mechanism.
+2. MINERAL PARAGENESIS: List primary and secondary minerals with evidence based on the color/texture pixels in the photographs.
+3. PATHFINDER & GEOCHEMISTRY MATRIX: Identify the suspected deposit type and specify the primary and pathfinder element pairs, target anomalies, and diagnostic geochemical ratios required for multi-element ICP-MS laboratory analysis.
+4. JORC SAMPLING GUIDE: Guide the field geologist by detailing channel sampling widths, continuous sampling intervals, the technical role of grab samples, and QA/QC rules under JORC Table 1 standards.
+5. DRILL GRID: Design 5 non-overlapping asymmetric drill holes to test the hanging wall, footwall, along-strike continuity, and depth extensions.
 
 Return ONLY a clean JSON object. Do NOT include markdown tags like ```json.
 
@@ -198,10 +198,10 @@ JSON FORMAT SPECIFICATION:
 {{
   "geological_context": "Deep geological analysis texts.",
   "mineral_paragenesis": [
-    {{"mineral": "Mineral Name", "presence": "Abundant/Trace/etc.", "reason": "Scientific justification text."}}
+    {{ "mineral": "Mineral Name", "presence": "Abundant/Trace/etc.", "reason": "Scientific justification text." }}
   ],
   "suspected_deposit_types": [
-    {{"type": "Deposit Type Name", "reason": "Justification text."}}
+    {{ "type": "Deposit Type Name", "reason": "Justification text." }}
   ],
   "pathfinder_matrix": {{
     "target_elements": "Au, As, Sb, Hg, W, Tl",
@@ -209,19 +209,19 @@ JSON FORMAT SPECIFICATION:
     "exploration_guide": "Exploration guideline text."
   }},
   "sampling_strategy": [
-    {{"location": "Target Location", "method": "Sampling method text.", "reason": "Compliance reason text."}}
+    {{ "location": "Target Location", "method": "Sampling method text.", "reason": "Compliance reason text." }}
   ],
-  "matrix_rock": {{"labels": ["Label 1", "Label 2", "Label 3"], "weights": [55, 20, 25]}},
-  "matrix_alteration": {{"labels": ["Label 1", "Label 2", "Label 3"], "weights": [45, 35, 20]}},
-  "matrix_texture": {{"labels": ["Label 1", "Label 2", "Label 3", "Label 4"], "weights": [35, 30, 20, 15]}},
-  "vein_geometry": {{"strike": 45, "dip": -60}},
+  "matrix_rock": {{ "labels": ["Label 1", "Label 2", "Label 3"], "weights": [55, 20, 25] }},
+  "matrix_alteration": {{ "labels": ["Label 1", "Label 2", "Label 3"], "weights": [45, 35, 20] }},
+  "matrix_texture": {{ "labels": ["Label 1", "Label 2", "Label 3", "Label 4"], "weights": [35, 30, 20, 15] }},
+  "vein_geometry": {{ "strike": 45, "dip": -60 }},
   "drill_strategy_text": "Drill program overview text.",
   "drill_program": [
-    {{"hole_id": "DDH-01_HW", "east": 150, "north": 120, "azimuth": 45, "dip": -60, "depth": 350, "target_reason": "Target text."}},
-    {{"hole_id": "DDH-02_DEEP", "east": 260, "north": 190, "azimuth": 45, "dip": -65, "depth": 520, "target_reason": "Target text."}},
-    {{"hole_id": "DDH-03_FW", "east": 380, "north": 290, "azimuth": 45, "dip": -55, "depth": 310, "target_reason": "Target text."}},
-    {{"hole_id": "DDH-04_LSTRIKE", "east": 520, "north": 420, "azimuth": 45, "dip": -70, "depth": 460, "target_reason": "Target text."}},
-    {{"hole_id": "DDH-05_RSTRIKE", "east": 70, "north": 40, "azimuth": 45, "dip": -50, "depth": 260, "target_reason": "Target text."}}
+    {{ "hole_id": "DDH-01_HW", "east": 150, "north": 120, "azimuth": 45, "dip": -60, "depth": 350, "target_reason": "Target text." }},
+    {{ "hole_id": "DDH-02_DEEP", "east": 260, "north": 190, "azimuth": 45, "dip": -65, "depth": 520, "target_reason": "Target text." }},
+    {{ "hole_id": "DDH-03_FW", "east": 380, "north": 290, "azimuth": 45, "dip": -55, "depth": 310, "target_reason": "Target text." }},
+    {{ "hole_id": "DDH-04_LSTRIKE", "east": 520, "north": 420, "azimuth": 45, "dip": -70, "depth": 460, "target_reason": "Target text." }},
+    {{ "hole_id": "DDH-05_RSTRIKE", "east": 70, "north": 40, "azimuth": 45, "dip": -50, "depth": 260, "target_reason": "Target text." }}
   ],
   "executive_summary": "Executive summary text for investment committee."
 }}
@@ -231,7 +231,6 @@ JSON FORMAT SPECIFICATION:
     return json.loads(clean_text)
 
 def get_robust_fallback_report(lang):
-    """Her iki dil için de hazır, yüksek mühendislik kalitesinde yedek veri depoları."""
     if lang == "TR":
         return {
             "geological_context": "Çoklu mostra ve yarma görsellerinin füzyon analizi, sahada gevrek-sünek (brittle-ductile) deformasyon mekanizmasının hakim olduğunu göstermektedir. Ana yapısal hat, hidrotermal akışkanların dikey göçüne izin veren bir makaslama zonudur. Yüzeydeki yoğun jarositik sarı, götitik kahverengi ve hematitik kırmızı renk anomalileri, sülfürlü birincil mineral parajenezinin yüzey şartlarında maruz kaldığı şiddetli superjen oksidasyonun (Demir Şapkası / Gossan) açık kanıtıdır.",
@@ -263,7 +262,7 @@ def get_robust_fallback_report(lang):
                 {"hole_id": "DDH-04_LSTRIKE", "east": 520, "north": 420, "azimuth": 45, "dip": -70, "depth": 460, "target_reason": "Yapının sol kanat doğrultu yönündeki yanal devamlılığını haritalamak."},
                 {"hole_id": "DDH-05_RSTRIKE", "east": 70, "north": 40, "azimuth": 45, "dip": -50, "depth": 260, "target_reason": "Sağ kanat doğrultu kapanış sınırını ve yapısal sonlanmayı denetlemek."}
             ],
-            "executive_summary": "Yüksek sülfür oksidasyonu ve güçlü makaslama kontrolü sunan bu hedef saha, ilk kademe sistematik arama sondajları için yüksek öncelikli (Tier-1) arama lokasyonu sınıfındadır."
+            "executive_summary": "Yüksek sülfür oksidasyonu ve güçlü makaslama kontrolü sunan bu hedef saha, ilk kademe sistematik arama sondajları için yüksek öncelikli (Tier-1) arama lokasyonu sınıfındadır. JORC uyumlu kanal numunesi sonuçları ile karot verilerinin korelasyonu ekonomik blok modellemesini hızlandıracaktır."
         }
     else:
         return {
@@ -296,7 +295,7 @@ def get_robust_fallback_report(lang):
                 {"hole_id": "DDH-04_LSTRIKE", "east": 520, "north": 420, "azimuth": 45, "dip": -70, "depth": 460, "target_reason": "Mapping lateral continuity along the left strike wing of the structure."},
                 {"hole_id": "DDH-05_RSTRIKE", "east": 70, "north": 40, "azimuth": 45, "dip": -50, "depth": 260, "target_reason": "Verifying right-flank strike boundaries and structural closure zones."}
             ],
-            "executive_summary": "Displaying intense surface oxidation coupled with robust structural shear control, this asset represents a Tier-1 exploration target recommended for immediate systematic drilling."
+            "executive_summary": "Displaying intense surface oxidation coupled with robust structural shear control, this asset represents a Tier-1 exploration target recommended for immediate systematic drilling. Correlating JORC-compliant channel sample results with core assay data will accelerate transition toward formal economic evaluation modeling."
         }
 
 # UI LAYOUT
@@ -349,7 +348,7 @@ with right_panel:
         st.markdown(f"<div class='section-header'>{t['sec_geo']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='geo-box'>{report.get('geological_context')}</div>", unsafe_allow_html=True)
         
-        # 🧪 GEOCHEMISTRY & PATHFINDER MATRIX
+        # GEOCHEMISTRY & PATHFINDER MATRIX
         st.markdown(f"<div class='section-header'>{t['sec_path']}</div>", unsafe_allow_html=True)
         pm = report.get("pathfinder_matrix", {})
         st.markdown(f"""
@@ -360,7 +359,7 @@ with right_panel:
         </div>
         """, unsafe_allow_html=True)
         
-        # 🧪 MINERAL PARAGENESIS MATRIX
+        # MINERAL PARAGENESIS MATRIX
         st.markdown(f"<div class='section-header'>{t['sec_min']}</div>", unsafe_allow_html=True)
         for min_data in report.get("mineral_paragenesis", []):
             st.markdown(f"""
@@ -375,7 +374,7 @@ with right_panel:
         for deposit in report.get("suspected_deposit_types", []):
             st.markdown(f"- **{deposit.get('type')}:** {deposit.get('reason')}")
 
-        # 📈 DONUT CHARTS
+        # DONUT CHARTS
         st.markdown(f"<div class='section-header'>{t['sec_donuts']}</div>", unsafe_allow_html=True)
         g_col1, g_col2, g_col3 = st.columns(3)
         
@@ -393,7 +392,7 @@ with right_panel:
             m_tex = report.get("matrix_texture", {"labels": ["Texture"], "weights": [100]})
             st.pyplot(draw_clean_donut(m_tex["labels"], m_tex["weights"], t["donut_tex"], pal_green))
 
-        # ⚒️ SAMPLING PLAN
+        # SAMPLING PLAN
         st.markdown(f"<div class='section-header'>{t['sec_sampling']}</div>", unsafe_allow_html=True)
         for sample in report.get("sampling_strategy", []):
             st.markdown(f"""
@@ -404,7 +403,7 @@ with right_panel:
             </div>
             """, unsafe_allow_html=True)
 
-        # 📦 3D DRILL GRID MODELING
+        # 3D DRILL GRID MODELING
         st.markdown(f"<div class='section-header'>{t['sec_3d']}</div>", unsafe_allow_html=True)
         
         drills = report.get("drill_program", [])
@@ -446,18 +445,90 @@ with right_panel:
         )
         st.plotly_chart(fig_3d, use_container_width=True, config={'toImageButtonOptions': {'format': 'png', 'filename': '3d_exploration_subspace', 'height': 700, 'width': 1000, 'scale': 2}})
         
-        # 📋 COORDINATE TABLE & EXPORT
+        # COORDINATE TABLE & EXPORT MOTOR
         df_drills = pd.DataFrame(drills)
         st.dataframe(df_drills[["hole_id", "east", "north", "azimuth", "dip", "depth", "target_reason"]], use_container_width=True)
         
         csv_bytes = df_drills.to_csv(index=False).encode('utf-8')
         json_bytes = json.dumps(report, indent=2, ensure_ascii=False).encode('utf-8')
         
+        # --- PDF/HTML GENERATOR MATRİSİ ---
+        pdf_html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <meta charset="utf-8">
+        <style>
+            body {{ font-family: 'Times New Roman', serif; color: #0f172a; line-height: 1.6; padding: 30px; }}
+            .header {{ border-bottom: 3px solid #1e3a8a; padding-bottom: 10px; margin-bottom: 30px; }}
+            .title {{ font-size: 24pt; font-weight: bold; color: #1e3a8a; }}
+            .subtitle {{ font-size: 12pt; color: #475569; font-style: italic; }}
+            .section-title {{ font-size: 14pt; font-weight: bold; color: #1e3a8a; margin-top: 25px; border-left: 5px solid #1e3a8a; padding-left: 10px; text-transform: uppercase; }}
+            .box {{ background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 6px; margin-top: 10px; }}
+            table {{ width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 10pt; }}
+            th {{ background-color: #1e3a8a; color: white; padding: 10px; text-align: left; font-weight: bold; }}
+            td {{ padding: 10px; border: 1px solid #cbd5e1; }}
+            tr:nth-child(even) td {{ background-color: #f1f5f9; }}
+        </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="title">GeoProspector-AI v22</div>
+                <div class="subtitle">Exploration Summary & Resource Compliance Technical Report Document</div>
+            </div>
+            
+            <div class="section-title">💼 Executive Summary / Yönetici Özeti</div>
+            <div class="box"><b>Report Analysis Summary:</b> {report.get('executive_summary')}</div>
+            
+            <div class="section-title">👁️ Geological Context & Outcrop Observations</div>
+            <p>{report.get('geological_context')}</p>
+            
+            <div class="section-title">🔬 Pathfinder Element Matrix (Laboratory Assays Suite)</div>
+            <div class="box">
+                <b>Target Multi-Element ICP-MS Suite:</b> {pm.get('target_elements')}<br>
+                <b>Diagnostic Ratios:</b> {pm.get('geochem_ratios')}<br>
+                <b>Exploration Guidance Rule:</b> {pm.get('exploration_guide')}
+            </div>
+            
+            <div class="section-title">🧪 Estimated Mineral Paragenesis Array</div>
+            <table>
+                <tr><th>Mineral Suite</th><th>Abundance</th><th>Pixel-Texture Justification</th></tr>
+                {"".join([f"<tr><td><b>{m['mineral']}</b></td><td>{m['presence']}</td><td>{m['reason']}</td></tr>" for m in report.get('mineral_paragenesis', [])])}
+            </table>
+
+            <div class="section-title">⚒️ JORC Table 1 Standardized Sampling Matrix</div>
+            <table>
+                <tr><th>Target Location / Interval</th><th>Methodology & Continuous Meterage</th><th>Compliance Justification</th></tr>
+                {"".join([f"<tr><td><b>{s['location']}</b></td><td>{s['method']}</td><td>{s['reason']}</td></tr>" for s in report.get('sampling_strategy', [])])}
+            </table>
+            
+            <div class="section-title">📦 Recommended Exploration Drill Program Grid</div>
+            <table>
+                <tr><th>Hole ID</th><th>Easting (m)</th><th>Northing (m)</th><th>Azimuth</th><th>Dip</th><th>Depth (m)</th><th>Objective</th></tr>
+                {"".join([f"<tr><td><b>{d['hole_id']}</b></td><td>{d['east']}</td><td>{d['north']}</td><td>{d['azimuth']}°</td><td>{d['dip']}°</td><td>{d['depth']}</td><td>{d['target_reason']}</td></tr>" for d in report.get('drill_program', [])])}
+            </table>
+            <br>
+            <div style="text-align: center; font-size: 9pt; color: #64748b; margin-top: 40px; border-top: 1px dashed #cbd5e1; padding-top: 10px;">
+                *** End of Technical Report - Compiled via GeoProspector-AI Matrix Engine ***
+            </div>
+        </body>
+        </html>
+        """
+
         down_col1, down_col2 = st.columns(2)
         with down_col1:
             st.download_button(t["btn_csv"], data=csv_bytes, file_name="exploration_drill_program.csv", mime="text/csv", use_container_width=True)
         with down_col2:
             st.download_button(t["btn_json"], data=json_bytes, file_name="geological_technical_report.json", mime="application/json", use_container_width=True)
+
+        # GENİŞ TEK BUTON: PDF/HTML ÇIKTISI İÇİN
+        st.download_button(
+            label=t["btn_pdf"],
+            data=pdf_html_content.encode('utf-8'),
+            file_name="GeoProspector_Executive_Report.html",
+            mime="text/html",
+            use_container_width=True
+        )
 
         # 📐 CROSS SECTION ENGINE
         st.markdown(f"<div class='section-header'>{t['sec_section']}</div>", unsafe_allow_html=True)
@@ -501,7 +572,7 @@ with right_panel:
             use_container_width=True
         )
 
-        # 💼 EXECUTIVE SUMMARY
+        # EXECUTIVE SUMMARY
         st.markdown(f"<div class='section-header'>{t['sec_summary']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div style='background:#1e293b; color:#f8fafc; padding:25px; border-radius:12px; font-size:1rem; line-height:1.8;'>{report.get('executive_summary')}</div>", unsafe_allow_html=True)
         
