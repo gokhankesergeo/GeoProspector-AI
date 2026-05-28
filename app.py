@@ -7,6 +7,7 @@ import plotly.graph_objects as go
 from PIL import Image
 import json
 import re
+import io
 
 try:
     from google import genai
@@ -309,7 +310,8 @@ with right_panel:
             scene=dict(xaxis_title='East (m)', yaxis_title='North (m)', zaxis_title='Elevation (m)', zaxis=dict(range=[-650, 50])),
             margin=dict(l=0, r=0, b=0, t=0), height=500
         )
-        st.plotly_chart(fig_3d, use_container_width=True)
+        # CRITICAL FIX: Explicitly enabled image export via Plotly modebar camera icon
+        st.plotly_chart(fig_3d, use_container_width=True, config={'toImageButtonOptions': {'format': 'png', 'filename': '3d_exploration_subspace', 'height': 700, 'width': 1000, 'scale': 2}})
         
         # 📋 COORDINATE TABLE & EXPORT MOTOR
         df_drills = pd.DataFrame(drills)
@@ -355,6 +357,17 @@ with right_panel:
         ax_sec.legend(loc='lower right', fontsize=8.5, facecolor='white', framealpha=0.95)
         plt.tight_layout()
         st.pyplot(fig_section)
+        
+        # CRITICAL FIX: Buffer setup to save Matplotlib section plot as byte array for image downloand button
+        buf = io.BytesIO()
+        fig_section.savefig(buf, format="png", dpi=300, bbox_inches='tight')
+        st.download_button(
+            label="📥 DOWNLOAD CROSS-SECTION IMAGE (PNG)",
+            data=buf.getvalue(),
+            file_name="geological_cross_section.png",
+            mime="image/png",
+            use_container_width=True
+        )
 
         # 💼 EXECUTIVE SUMMARY
         st.markdown("<div class='section-header'>💼 Corporate Risk & Economic Evaluation Executive Summary</div>", unsafe_allow_html=True)
