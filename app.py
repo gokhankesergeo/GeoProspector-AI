@@ -13,14 +13,14 @@ try:
 except Exception:
     genai = None
 
-# Sayfa Yapılandırması - Global Arama Standartları
+# Page Configuration - Global Exploration Standards
 st.set_page_config(
     page_title="GeoProspector-AI v22 | JORC Compliant Exploration Director",
     page_icon="⛏️",
     layout="wide"
 )
 
-# Kurumsal Mühendislik Arayüzü CSS Katmanı
+# Enterprise Engineering UI CSS Layer
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;700;800&display=swap');
@@ -37,7 +37,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="main-title">⛏️ GeoProspector-AI v22</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Uluslararası JORC / NI 43-101 Örnekleme Standartları ve İz Element (Pathfinder) Analiz Motoru</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-title">International JORC / NI 43-101 Sampling Standards & Pathfinder Element Analysis Engine</div>', unsafe_allow_html=True)
 st.markdown("---")
 
 def clean_json_string(text):
@@ -64,7 +64,7 @@ def draw_clean_donut(labels, weights, title, color_palette):
 
 def ai_fused_geology_engine(api_key, uploaded_files, user_notes):
     if genai is None:
-        raise Exception("Google GenAI modülü yüklenemedi!")
+        raise Exception("Google GenAI module could not be loaded!")
     client = genai.Client(api_key=api_key)
     
     processed_images = []
@@ -74,51 +74,51 @@ def ai_fused_geology_engine(api_key, uploaded_files, user_notes):
         processed_images.append(img)
 
     prompt = """
-Sen JORC ve NI 43-101 maden arama ve kaynak raporlama standartlarında uzmanlaşmış, dünya çapında projeler yönetmiş Kıdemli bir Arama Direktörüsün.
-Sana sahada çekilmiş çoklu (maksimum 6 adet) mostra, yarma, fay veya alterasyon fotoğrafları ile jeoloğun pusula el notları iletiliyor: '{user_notes}'
+You are a Senior Exploration Director with world-class expertise in JORC and NI 43-101 mineral exploration and resource reporting standards.
+You are provided with field photographs of outcrops, trenches, faults, or alteration zones, along with the geologist's field notes: '{user_notes}'
 
-Yüklenen tüm görselleri bütünsel bir yaklaşımla analiz et ve şu kurallara göre bir jeoloji raporu üret:
+Analyze all uploaded images holistically and generate a geological report strictly in English based on the following rules:
 
-GÖREVLERİNİZ:
-1. GEOLOGICAL CONTEXT: Fotoğraflardaki ana yapısal unsurları (fay, makaslama, kırık setleri), renk anomalilerini (demir şapkası/gossan, limonitik sarı, jarosit, götit, hematit kırmızısı) ve bunların mineralizasyon mekanizması ile ilişkisini kurumsal dille açıkla.
-2. MINERAL PARAGENESIS: Sahada bulunabilecek birincil ve ikincil mineralleri (Pirit, Arsenopirit, Kalkopirit, Epidot, Garnet, Sfalerit, Galen, Malakit vb.) fotoğraftaki renk/doku piksellerine dayandırarak kanıtlarıyla listele.
-3. PATHFINDER & GEOCHEMISTRY MATRIX: Şüphelenilen yatak tipini (Örn: Orojenik Altın, Porfiri, Epitermal vb.) doğrulamak için laboratuvardan istenecek çoklu element (ICP-MS) analizinde aranması gereken ana ve iz element (Pathfinder) çiftlerini, hedef anomalileri ve bunların ayırt edici jeokimyasal oranlarını belirt.
-4. JORC SAMPLING GUIDE: Sahadan numune alacak jeoloğa rehberlik etmek için; kanal numunesi genişliklerini, kesintisiz örnekleme mesafelerini, Grab numunelerin teknik rollerini ve JORC standartlarında hata payını azaltacak QA/QC kurallarını (CRM/Blank kullanımı) en üst düzey teknik dille detaylandır.
-5. DRILL GRID: Yapının arazide saptanan doğrultusuna dik açıyla bakacak şekilde tavan bloku (Hanging Wall), taban bloku (Footwall), sağ-sol doğrultu devamı ve derin kök zonunu test edecek 5 adet çakışmayan asimetrik sondaj tasarla.
+YOUR TASKS:
+1. GEOLOGICAL CONTEXT: Explain the main structural elements (faults, shear zones, fracture sets), color anomalies (gossan, limonitic yellow, jarosite, goethite, hematitic red), and their relationship with the mineralization mechanism in an institutional tone.
+2. MINERAL PARAGENESIS: List primary and secondary minerals (Pyrite, Arsenopyrite, Chalcopyrite, Epidote, Garnet, Sphalerite, Galena, Malachite, etc.) with evidence based on the color/texture pixels in the photographs.
+3. PATHFINDER & GEOCHEMISTRY MATRIX: Identify the suspected deposit type (e.g., Orogenic Gold, Porphyry, Epithermal, etc.) and specify the primary and pathfinder element pairs, target anomalies, and diagnostic geochemical ratios required for multi-element ICP-MS laboratory analysis.
+4. JORC SAMPLING GUIDE: Guide the field geologist by detailing channel sampling widths, continuous sampling intervals, the technical role of grab samples, and QA/QC rules (use of CRM/Blanks) to minimize error margins under JORC Table 1 standards.
+5. DRILL GRID: Design 5 non-overlapping asymmetric drill holes to test the hanging wall, footwall, along-strike continuity (left/right), and depth extensions, perpendicular to the strike identified in the field.
 
-Yalnızca temiz bir JSON objesi döndür. Markdown etiketleri (```json) olmasın.
+Return ONLY a clean JSON object. Do NOT include markdown tags like ```json.
 
-JSON FORMATI:
+JSON FORMAT SPECIFICATION (Response must be entirely in English):
 {
-  "geological_context": "Fotoğraflardaki renk anomalileri, alterasyon sınırları, milonitik/kataklastik yapılar ve makaslama mekanizmasının uluslararası standartta derin jeolojik analizi.",
+  "geological_context": "Deep geological analysis of color anomalies, alteration boundaries, mylonitic/cataclastic fabrics, and shearing mechanisms using international standards.",
   "mineral_paragenesis": [
-    {"mineral": "Pirit / Limonit", "presence": "Yoğun", "reason": "Görseldeki yaygın hematitik kırmızı ve götitik kahverengi demir şapkası (gossan) oluşumları."},
-    {"mineral": "Arsenopirit", "presence": "Olası / Yüksek Risk", "reason": "Makaslama zonundaki asimetrik saçılı koyu gri sülfür bantları ve kırık dolguları."}
+    {"mineral": "Pyrite / Limonite", "presence": "Abundant", "reason": "Widespread hematitic red and goethitic brown gossanous developments visible in the imagery."},
+    {"mineral": "Arsenopirit", "presence": "Possible / High Risk", "reason": "Asymmetrical disseminated dark-grey sulfide bands and fracture-fillings within the shear zone."}
   ],
   "suspected_deposit_types": [
-    {"type": "Orojenik Altın (Shear-Hosted)", "reason": "Bölgesel makaslama deformasyonu, yoğun sülfür oksidasyonu ve gevrek-sünek geçiş yapıları bu modeli doğrular."}
+    {"type": "Orogenic Gold (Shear-Hosted)", "reason": "Regional shear deformation, intense sulfide oxidation, and brittle-ductile transition structures strongly support this exploration model."}
   ],
   "pathfinder_matrix": {
     "target_elements": "Au, As, Sb, Hg, W, Tl",
-    "geochem_ratios": "As/Sb oranı dikey zonlanmayı, Au/Ag oranı ise sistemin derin kök potansiyelini (boiling zone) anlamak için laboratuvarda öncelikli takip edilmelidir.",
-    "exploration_guide": "Eğer ICP-MS analizlerinde As > 100 ppm ve Sb > 10 ppm anomalileri birbirini takip ediyorsa, bu durum mostra altındaki ana merceğin varlığını kesinleştirir."
+    "geochem_ratios": "As/Sb ratios should be monitored closely to understand vertical zoning, while Au/Ag ratios indicate the deep root potential (boiling zone) of the system.",
+    "exploration_guide": "If As > 100 ppm and Sb > 10 ppm anomalies correlate linearly in the ICP-MS data, it confirms the continuity of the main mineralized lens beneath the outcrop."
   },
   "sampling_strategy": [
-    {"location": "Ana Makaslama ve Damar Aksı (Merkez Hat)", "method": "0.25m genişlikte, 1.0m kesintisiz aralıklı Elmas Testere Kanal Örneklemesi", "reason": "Cevher gövdesinin gerçek tenör ve metalürjik genişlik dağılımını JORC Tablo 1 standartlarına uygun olarak kaynak tahminine dahil edebilmek için esastır. Her 20 numunede bir Certified Reference Material (CRM) eklenmelidir."}
+    {"location": "Main Shear and Vein Axis (Center Line)", "method": "Diamond-saw channel sampling at 0.25m widths and 1.0m continuous intervals.", "reason": "Essential for integrating true width and grade distribution into resource estimation under JORC Table 1 guidelines. One Certified Reference Material (CRM) must be inserted every 20 samples."}
   ],
-  "matrix_rock": {"labels": ["Metamorfik / Granitoid", "Kuvars Damar Swarm", "Altere Zon"], "weights": [55, 20, 25]},
-  "matrix_alteration": {"labels": ["Gossan / Demir Oksit", "Silisleşme", "Arjilik / Serisitik"], "weights": [45, 35, 20]},
-  "matrix_texture": {"labels": ["Gevrek Kırık Setleri", "Makaslama Dokusu", "Kataklastik / Breş", "Stockwork"], "weights": [35, 30, 20, 15]},
+  "matrix_rock": {"labels": ["Metamorphic / Granitoid", "Quartz Vein Swarm", "Altered Zone"], "weights": [55, 20, 25]},
+  "matrix_alteration": {"labels": ["Gossan / Iron Oxide", "Silicification", "Argillic / Sericitic"], "weights": [45, 35, 20]},
+  "matrix_texture": {"labels": ["Brittle Fracture Sets", "Shear Fabric", "Cataclastic / Breccia", "Stockwork"], "weights": [35, 30, 20, 15]},
   "vein_geometry": {"strike": 45, "dip": -60},
-  "drill_strategy_text": "Sondajlar, yazı çakışmalarını önleyecek asimetrik grid düzeninde planlanmış olup damar tavan ve taban bloklarını optimum açıyla kesmeyi hedefler.",
+  "drill_strategy_text": "Drill hole coordinates are optimized using an asymmetric grid layout to evaluate the hanging wall and footwall targets without label overlaps.",
   "drill_program": [
-    {"hole_id": "DDH-01_HW", "east": 150, "north": 120, "azimuth": 45, "dip": -60, "depth": 350, "target_reason": "Tavan bloğu (Hanging Wall) geometrisini sığ kotta yakalamak."},
-    {"hole_id": "DDH-02_DEEP", "east": 260, "north": 190, "azimuth": 45, "dip": -65, "depth": 520, "target_reason": "Damarın derin kök potansiyelini ve yüksek tenörlü zonunu test etmek."},
-    {"hole_id": "DDH-03_FW", "east": 380, "north": 290, "azimuth": 45, "dip": -55, "depth": 310, "target_reason": "Taban bloğundaki (Footwall) paralel sızmaları haritalamak."},
-    {"hole_id": "DDH-04_LSTRIKE", "east": 520, "north": 420, "azimuth": 45, "dip": -70, "depth": 460, "target_reason": "Sol kanat doğrultu devamlılığını kontrol etmek."},
-    {"hole_id": "DDH-05_RSTRIKE", "east": 70, "north": 40, "azimuth": 45, "dip": -50, "depth": 260, "target_reason": "Sağ kanat kapanış geometrisini ve sınırını test etmek."}
+    {"hole_id": "DDH-01_HW", "east": 150, "north": 120, "azimuth": 45, "dip": -60, "depth": 350, "target_reason": "Intercepting the hanging wall geometry at shallow levels."},
+    {"hole_id": "DDH-02_DEEP", "east": 260, "north": 190, "azimuth": 45, "dip": -65, "depth": 520, "target_reason": "Testing the deep root potential and possible high-grade bonanza zone of the structure."},
+    {"hole_id": "DDH-03_FW", "east": 380, "north": 290, "azimuth": 45, "dip": -55, "depth": 310, "target_reason": "Mapping parallel stringers and halos in the footwall zone."},
+    {"hole_id": "DDH-04_LSTRIKE", "east": 520, "north": 420, "azimuth": 45, "dip": -70, "depth": 460, "target_reason": "Verifying along-strike extension on the left flank."},
+    {"hole_id": "DDH-05_RSTRIKE", "east": 70, "north": 40, "azimuth": 45, "dip": -50, "depth": 260, "target_reason": "Testing right-flank closure geometry and boundaries."}
   ],
-  "executive_summary": "Yatırım komitesi için risk, kazanç ve bir sonraki aşama arama bütçesi değerlendirmesi."
+  "executive_summary": "Risk, reward, and next-stage exploration budget assessment tailored for the investment committee."
 }
 """
     response = client.models.generate_content(model="gemini-2.5-flash", contents=processed_images + [prompt])
@@ -126,122 +126,122 @@ JSON FORMATI:
     return json.loads(clean_text)
 
 def get_robust_fallback_report():
-    """API veya veri transfer hatası durumlarında devreye giren yüksek standartlı yedek rapor veri yapısı."""
+    """High-standard fallback report data structure used during API or data transfer timeouts."""
     return {
-        "geological_context": "Çoklu mostra ve yarma görsellerinin füzyon analizi, sahada gevrek-sünek (brittle-ductile) deformasyon mekanizmasının hakim olduğunu göstermektedir. Ana yapısal hat, hidrotermal akışkanların dikey göçüne izin veren bir makaslama zonudur. Yüzeydeki yoğun jarositik sarı, götitik kahverengi ve hematitik kırmızı renk anomalileri, sülfürlü birincil mineral parajenezinin yüzey şartlarında maruz kaldığı şiddetli superjen oksidasyonun ( Demir Şapkası / Gossan) açık kanıtıdır.",
+        "geological_context": "Integrated analysis of the outcrop exposures indicates a dominant brittle-ductile deformation regime. The main structural corridor manifests as a prominent shear zone facilitating vertical hydrothermal fluid migration. Extensive surface color anomalies, including jarositic yellow, goethitic brown, and hematitic red, provide robust evidence of a mature iron hat (Gossan) formed via intense supergene oxidation of primary sulfide mineralization.",
         "mineral_paragenesis": [
-            {"mineral": "Pirit / Limonit / Götit", "presence": "Çok Yoğun", "reason": "Yüzey yarmasındaki yaygın hücresel tekstür gösteren demir-oksit tasmanları ve paslanma kabukları."},
-            {"mineral": "Arsenopirit", "presence": "Yüksek Olasılık", "reason": "Makaslama düzlemlerindeki milonitik koyu gri izler ve arsenik kökenli donuk yeşilimsi skorodit alterasyon emareleri."},
-            {"mineral": "Kuvars / Çakmaktaşı Silis", "presence": "Yoğun", "reason": "Cevherli hattın çeperlerinde gelişen, yan kayacı tamamen replase etmiş yoğun silisleşme ve kuvars damar swarm yapıları."},
-            {"mineral": "Epidot / Garnet (Kontakt Alanlarında)", "presence": "Lokal / Eser", "reason": "Ana kayaç sınırına yakın dış alterasyon halolarında saptanan rekristalize yeşil silikat mineralleri."}
+            {"mineral": "Pyrite / Limonite / Goethite", "presence": "Abundant", "reason": "Widespread cellular boxwork textures and ferruginous crusts observed across the trench face."},
+            {"mineral": "Arsenopyrite", "presence": "High Probability", "reason": "Dark-grey mylonitic streaks along shear planes associated with dull greenish scorodite alteration stains."},
+            {"mineral": "Quartz / Chert Silica", "presence": "Abundant", "reason": "Pervasive silicification and dense quartz vein swarms completely replacing the host rock matrix along the structural core."},
+            {"mineral": "Epidote / Garnet", "presence": "Local / Trace", "reason": "Recrystallized calc-silicate minerals identified along the peripheral alteration halos near the host contact zone."}
         ],
         "suspected_deposit_types": [
-            {"type": "Orojenik Altın Yatağı (Shear-Hosted Au)", "reason": "Bölgesel ölçekli makaslama kırıkları, yoğun kuvars enjeksiyonları ve arsenopiritli milonit dokusu bu modeli birincil hedef yapar."},
-            {"type": "Düşük Sülfidasyon Epitermal (Bonanza Tipi)", "reason": "Üst seviyelerdeki gevrek çatlak dolguları ve kolloform şeritli kuvars kalıntıları ikincil bir potansiyele işaret eder."}
+            {"type": "Orogenic Gold Deposit (Shear-Hosted Au)", "reason": "Regional-scale shear fractures, intense quartz injections, and arsenopyrite-bearing mylonites make this the primary exploration target."},
+            {"type": "Low-Sulfidation Epithermal (Bonanza Type)", "reason": "Brittle stockworks and residual colloform-banded quartz fragments at upper levels suggest secondary epithermal overprinting potential."}
         ],
         "pathfinder_matrix": {
             "target_elements": "Au, As, Sb, Hg, W, Tl, Ag, Te",
-            "geochem_ratios": "Laboratuvardan gelecek multi-element ICP-MS analizlerinde $As/Sb$ ve $Au/Ag$ oranları dikey zonlanmayı ve sistemin derin kökündeki zenginleşme (Boiling/Bonanza) kuşağını haritalamak için birincil kılavuzdur.",
-            "exploration_guide": "Jeokimyasal eşik değerlerde As > 150 ppm, Sb > 15 ppm ve Hg > 1 ppm anomalilerinin doğrusal korelasyon göstermesi, yüzeydeki yapının derinde masif bir sülfür merceğine açıldığının uluslararası kabul görmüş kanıtıdır."
+            "geochem_ratios": "In forthcoming multi-element ICP-MS analyses, As/Sb and Au/Ag ratios will serve as primary Vectors to map vertical zoning and detect high-grade bonanza/boiling zones.",
+            "exploration_guide": "Linear correlation of As > 150 ppm, Sb > 15 ppm, and Hg > 1 ppm acts as an industry-standard indicator that the surface expression connects to a massive sulfide lens at depth."
         },
         "sampling_strategy": [
-            {"location": "Ana Makaslama ve Cevherli Damar Aksı (Merkez Hat)", "method": "0.25m genişlikte, 1.0m kesintisiz aralıklı Elmas Testere Kanal Örneklemesi", "reason": "Cevher gövdesinin gerçek tenör, kalınlık ve metalürjik dağılımını JORC Tablo 1 standartlarında belirlemek için esastır. Numune ağırlıkları 3-5 kg arasında tutulmalı, her 20 örnekte bir QA/QC doğrulaması için Certified Reference Material (CRM) ve Blank (boş numune) seriye eklenmelidir."},
-            {"location": "Asılı Tavan (Hanging Wall) ve Taban Blokları (0.5m - 1.5m çevre çeperi)", "method": "1.0 metre aralıklı sürekli kanal örneklemesi", "reason": "Ana damar dışındaki disemine (saçılı) veya paralel mikro-damarcıkların ekonomik işletme genişliğini ve yan kayaç penetrasyon derinliğini ölçerek yeraltı üretim planlamasına veri sağlamak."},
-            {"location": "İkincil Kırık Setleri, Damarcık Swarm'ları ve Altere Dış Sahalar", "method": "Hedefe Yönelik Grab (Yüzey Seçme) Örneklemesi", "reason": "Arama projesinin erken keşif aşamasında, sahadaki yapısal elementlerin en yüksek tenör potansiyellerini (anomali piklerini) hızlıca taramak ve ileri sondaj hedefleri oluşturmak için kullanılır; tek başına kaynak kestiriminde kullanılmaz."}
+            {"location": "Main Shear and Mineralized Vein Axis (Center Line)", "method": "Diamond-saw channel sampling at 0.25m widths and 1.0m continuous intervals.", "reason": "Crucial for establishing true grade, thickness, and metallurgical variability for JORC Table 1 resource estimations. Sample weights must be maintained between 3-5 kg, with Certified Reference Materials (CRMs) and Blanks inserted every 20 samples for QA/QC verification."},
+            {"location": "Hanging Wall and Footwall Alteration Halos (0.5m - 1.5m margins)", "method": "Continuous channel sampling at 1.0m intervals.", "reason": "Measures the penetration depth and economic grade of disseminated or parallel micro-veinlets within the wall rocks to provide critical data for future underground mine design."},
+            {"location": "Secondary Fracture Sets and Distal Alteration Zones", "method": "Targeted Grab Sampling", "reason": "Utilized during early-stage exploration to screen peak grade anomalies across secondary structures and map future drill targets; not independently utilized for resource estimation."}
         ],
-        "matrix_rock": {"labels": ["Metamorfik / Granitoid Gözlü Gnays", "Kuvars Damar Swarm Yapıları", "Altere Sülfürlü Yan Kayaç"], "weights": [55, 20, 25]},
-        "matrix_alteration": {"labels": ["Gossan / Demir Oksit Şapkası", "Yoğun Silisleşme (Kuvars)", "Arjilik Kil / Serisitik Halo"], "weights": [45, 35, 20]},
-        "matrix_texture": {"labels": ["Gevrek Kırık/Çatlak Setleri", "Makaslama / Milonit Dokusu", "Kataklastik Breşleşme", "Stockwork Ağları"], "weights": [35, 30, 20, 15]},
+        "matrix_rock": {"labels": ["Metamorphic / Granitoid Augen Gnays", "Quartz Vein Swarm Structures", "Altered Sulfidic Wall Rock"], "weights": [55, 20, 25]},
+        "matrix_alteration": {"labels": ["Gossan / Iron Oxide Cap", "Pervasive Silicification (Quartz)", "Argillic Clay / Sericitic Halo"], "weights": [45, 35, 20]},
+        "matrix_texture": {"labels": ["Brittle Fracture Sets", "Shear / Milonite Texture", "Cataclastic Brecciation", "Stockwork Networks"], "weights": [35, 30, 20, 15]},
         "vein_geometry": {"strike": 45, "dip": -60},
-        "drill_strategy_text": "Sondajların lokasyon dağılımları, arazide saptanan damar eğimine dik açıyla bakacak ve etiket çakışmalarını önleyecek asimetrik grid düzeninde tasarlanmıştır.",
+        "drill_strategy_text": "Drill hole layouts are distributed in an alternating asymmetric grid pattern to optimize intercepts perpendicular to the structural dip and prevent text overlaps.",
         "drill_program": [
-            {"hole_id": "DDH-01_HW", "east": 150, "north": 120, "azimuth": 45, "dip": -60, "depth": 350, "target_reason": "Damarın tavan bloğundaki (hanging wall) sığ derinlik devamlılığını kesmek."},
-            {"hole_id": "DDH-02_DEEP", "east": 260, "north": 190, "azimuth": 45, "dip": -65, "depth": 520, "target_reason": "Yapının derin kök potansiyelini ve olası yüksek tenörlü bonanza/kaynama zonunu test etmek."},
-            {"hole_id": "DDH-03_FW", "east": 380, "north": 290, "azimuth": 45, "dip": -55, "depth": 310, "target_reason": "Taban bloğundaki (footwall) paralel sızmaları ve altere çeperi kontrol etmek."},
-            {"hole_id": "DDH-04_LSTRIKE", "east": 520, "north": 420, "azimuth": 45, "dip": -70, "depth": 460, "target_reason": "Yapının sol kanat doğrultu yönündeki yanal devamlılığını haritalamak."},
-            {"hole_id": "DDH-05_RSTRIKE", "east": 70, "north": 40, "azimuth": 45, "dip": -50, "depth": 260, "target_reason": "Sağ kanat doğrultu kapanış sınırını ve yapısal sonlanmayı denetlemek."}
+            {"hole_id": "DDH-01_HW", "east": 150, "north": 120, "azimuth": 45, "dip": -60, "depth": 350, "target_reason": "Intersecting the shallow depth continuity of the vein within the hanging wall block."},
+            {"hole_id": "DDH-02_DEEP", "east": 260, "north": 190, "azimuth": 45, "dip": -65, "depth": 520, "target_reason": "Testing deep root extensions and target high-grade bonanza/boiling zones."},
+            {"hole_id": "DDH-03_FW", "east": 380, "north": 290, "azimuth": 45, "dip": -55, "depth": 310, "target_reason": "Evaluating footwall parallel stringers and peripheral alteration halos."},
+            {"hole_id": "DDH-04_LSTRIKE", "east": 520, "north": 420, "azimuth": 45, "dip": -70, "depth": 460, "target_reason": "Mapping lateral continuity along the left strike wing of the structure."},
+            {"hole_id": "DDH-05_RSTRIKE", "east": 70, "north": 40, "azimuth": 45, "dip": -50, "depth": 260, "target_reason": "Verifying right-flank strike boundaries and structural closure zones."}
         ],
-        "executive_summary": "Yüksek sülfür oksidasyonu ve güçlü makaslama kontrolü sunan bu hedef saha, ilk kademe sistematik arama sondajları için yüksek öncelikli (Tier-1) arama lokasyonu sınıfındadır. Önerilen JORC uyumlu kanal örneklemesi tenör sonuçları ile sondaj karot verilerinin korelasyonu, projenin ekonomik modelleme aşamasına geçişini sağlayacaktır."
+        "executive_summary": "Displaying intense surface oxidation coupled with robust structural shear control, this asset represents a Tier-1 exploration target recommended for immediate systematic drilling. Correlating the proposed JORC-compliant channel sample results with core assay data will accelerate transition toward formal economic evaluation modeling."
     }
 
-# UI YERLEŞİM PLANI
+# UI LAYOUT
 left_panel, right_panel = st.columns([1, 2.2])
 
 with left_panel:
-    st.header("🧭 Saha Veri Havuzu")
+    st.header("🧭 Field Data Hub")
     uploaded_files = st.file_uploader(
-        "Saha Görselleri (Mostra, Yarma, Karot Çoklu Seçim)", 
+        "Upload Field Images (Outcrop, Trench, Core Multi-Selection)", 
         type=["jpg", "jpeg", "png"], 
         accept_multiple_files=True
     )
     
     if uploaded_files:
-        st.success(f"✔️ {len(uploaded_files)} adet görsel veri havuzuna dahil edildi.")
+        st.success(f"✔️ {len(uploaded_files)} images successfully imported to data hub.")
         grid_cols = st.columns(3)
         for i, file in enumerate(uploaded_files[:6]):
             with grid_cols[i % 3]:
                 st.image(Image.open(file), use_container_width=True)
                 
-    api_key = st.text_input("Gemini API Anahtarınız (Opsiyonel):", type="password")
+    api_key = st.text_input("Gemini API Key (Optional):", type="password")
     user_notes = st.text_area(
-        "Jeolog Pusula Ölçümleri & Yapısal Notlar:", 
-        value="Yol yarmasında yüzeyleyen, demir oksitçe zenginleşmiş gossanlı yapısal hat. Yaklaşık 20-30 cm genişliğinde belirgin makaslama ve gevrek çatlak setleri içeriyor. Doğrultu genel olarak 045, KB yönlü dik eğimli.", 
+        "Geologist Field Measurements & Structural Notes:", 
+        value="Gossanous iron-oxide rich structural zone outcropping along road cut. Displays prominent shearing and brittle fracture sets roughly 20-30 cm wide. Strike general orientation 045, dipping steeply to the NW.", 
         height=110
     )
-    run_engine = st.button("🚀 ULUSLARARASI RAPORLAMA MOTORUNU ÇALISTIR", type="primary", use_container_width=True)
+    run_engine = st.button("🚀 EXECUTE INTERNATIONAL REPORTING ENGINE", type="primary", use_container_width=True)
 
 with right_panel:
     if not run_engine:
-        st.info("💡 **Mühendislik Protokolü:** Görsellerinizi yükleyip motoru tetikleyin. Sistem yazıları çakıştırmayan dinamik grafikler üretecek, resimdeki pikselleri mineral parajeneziyle eşleştirecek ve laboratuvar için pathfinder element matrisini dökerek verileri Excel formatına dönüştürecektir.")
+        st.info("💡 **Engineering Protocol:** Import your field imagery and trigger the engine. The system will compile non-overlapping dynamic cross-sections, map pixel diagnostics to mineral paragenesis, establish pathfinder element matrices for laboratory assays, and enable direct data exports to Excel format.")
     else:
         if not uploaded_files:
-            st.error("Kritik Hata: Analizin başlayabilmesi için sahaya ait en az 1 adet resim yüklemelisiniz!")
+            st.error("Critical Error: At least 1 field image must be uploaded to initiate analysis!")
             st.stop()
             
-        with st.spinner("Çoklu saha görselleri harmanlanıyor, JORC uyumlu analiz matrisi üretiliyor..."):
+        with st.spinner("Synthesizing multi-source field data, generating JORC-compliant matrix..."):
             if not api_key:
                 report = get_robust_fallback_report()
             else:
                 try:
                     report = ai_fused_geology_engine(api_key, uploaded_files, user_notes)
                 except Exception as ex:
-                    st.warning(f"Güvenli Mühendislik Modu Devreye Alındı. (Detay: {ex})")
+                    st.warning(f"Safe Engineering Fallback Activated. (Details: {ex})")
                     report = get_robust_fallback_report()
 
-        # ----------------- ÜST DÜZEY RAPOR ÇIKTILARI -----------------
+        # ----------------- ADVANCED REPORT OUTPUTS -----------------
         st.markdown("<div class='report-card'>", unsafe_allow_html=True)
         
-        st.markdown("<div class='section-header'>👁️ Mostra Gözlemleri & Yapısal Jeoloji Analizi</div>", unsafe_allow_html=True)
+        st.markdown("<div class='section-header'>👁️ Outcrop Observations & Structural Geology Analysis</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='geo-box'>{report.get('geological_context')}</div>", unsafe_allow_html=True)
         
-        # 🧪 JOKİMYA & PATHFINDER AYRIM MATRİSİ
-        st.markdown("<div class='section-header'>🔬 Laboratuvar İz Element (Pathfinder) Ayrım Matrisi</div>", unsafe_allow_html=True)
+        # 🧪 GEOCHEMISTRY & PATHFINDER MATRIX
+        st.markdown("<div class='section-header'>🔬 Laboratory Pathfinder Element Matrix</div>", unsafe_allow_html=True)
         pm = report.get("pathfinder_matrix", {})
         st.markdown(f"""
         <div class='pathfinder-box'>
-            🎯 <strong>Takip Edilecek Ana ve İz Elementler (Multi-Element ICP-MS):</strong> <code style='color:#b91c1c; font-weight:bold; font-size:1.1rem;'>{pm.get('target_elements')}</code> <br><br>
-            📊 <strong>Ayırt Edici Jeokimyasal Oranlar & Zonlanma:</strong> {pm.get('geochem_ratios')} <br><br>
-            💡 <strong>Arama Sahası Kılavuz Kuralı:</strong> {pm.get('exploration_guide')}
+            **🎯 Target Assay Suite (Multi-Element ICP-MS):** <code style='color:#b91c1c; font-weight:bold; font-size:1.1rem;'>{pm.get('target_elements')}</code> <br><br>
+            **📊 Diagnostic Geochemical Ratios & Vectoring:** {pm.get('geochem_ratios')} <br><br>
+            **💡 Exploration Guidance Rule:** {pm.get('exploration_guide')}
         </div>
         """, unsafe_allow_html=True)
         
-        # 🧪 MİNERAL PARAJENEZİ MATRİSİ
-        st.markdown("<div class='section-header'>🧪 Fotoğraflardan Saptanan Tahmini Mineral Parajenezi</div>", unsafe_allow_html=True)
+        # 🧪 MINERAL PARAGENESIS MATRIX
+        st.markdown("<div class='section-header'>🧪 Image-Derived Estimated Mineral Paragenesis</div>", unsafe_allow_html=True)
         for min_data in report.get("mineral_paragenesis", []):
             st.markdown(f"""
             <div style='background:#ffffff; border:1px solid #cbd5e1; padding:12px; border-radius:8px; margin-bottom:8px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);'>
-                <strong>💎 Mineral Serisi:</strong> <span class='badge-mineral'>{min_data.get('mineral')}</span> 
-                | 📊 <strong>Tahmini Yoğunluk:</strong> {min_data.get('presence')} <br>
-                💡 <strong>Renk / Doku Piksellerine Dayalı Kanıt:</strong> {min_data.get('reason')}
+                **💎 Mineral Suite:** <span class='badge-mineral'>{min_data.get('mineral')}</span> 
+                | **📊 Visual Abundance:** {min_data.get('presence')} <br>
+                **💡 Pixel-Texture Based Evidence:** {min_data.get('reason')}
             </div>
             """, unsafe_allow_html=True)
 
-        st.markdown("**🔍 Potansiyel Maden Yatağı Modeli Teşhisleri:**")
+        st.markdown("**🔍 Suspected Deposit Model Classifications:**")
         for deposit in report.get("suspected_deposit_types", []):
             st.markdown(f"- **{deposit.get('type')}:** {deposit.get('reason')}")
 
-        # 📈 ÇAKIŞMAYAN DONUT GRAFİKLERİ
-        st.markdown("<div class='section-header'>📊 Donut Grafik Motoru ile Kayaç ve Deformasyon Dağılımları</div>", unsafe_allow_html=True)
+        # 📈 NON-OVERLAPPING DONUT CHARTS
+        st.markdown("<div class='section-header'>📊 Lithology, Alteration & Deformation Matrix Profiles</div>", unsafe_allow_html=True)
         g_col1, g_col2, g_col3 = st.columns(3)
         
         pal_blue = ['#1e3a8a', '#2563eb', '#60a5fa', '#93c5fd']
@@ -249,28 +249,28 @@ with right_panel:
         pal_green = ['#065f46', '#10b981', '#34d399', '#a7f3d0']
         
         with g_col1:
-            m_rock = report.get("matrix_rock", {"labels": ["Birim"], "weights": [100]})
-            st.pyplot(draw_clean_donut(m_rock["labels"], m_rock["weights"], "🪨 Tahmini Kayaç Dağılımı", pal_blue))
+            m_rock = report.get("matrix_rock", {"labels": ["Unit"], "weights": [100]})
+            st.pyplot(draw_clean_donut(m_rock["labels"], m_rock["weights"], "🪨 Estimated Lithology Share", pal_blue))
         with g_col2:
-            m_alt = report.get("matrix_alteration", {"labels": ["Alterasyon"], "weights": [100]})
-            st.pyplot(draw_clean_donut(m_alt["labels"], m_alt["weights"], "🧪 Alterasyon Dağılımı", pal_red))
+            m_alt = report.get("matrix_alteration", {"labels": ["Alteration"], "weights": [100]})
+            st.pyplot(draw_clean_donut(m_alt["labels"], m_alt["weights"], "🧪 Alteration Distribution", pal_red))
         with g_col3:
-            m_tex = report.get("matrix_texture", {"labels": ["Doku"], "weights": [100]})
-            st.pyplot(draw_clean_donut(m_tex["labels"], m_tex["weights"], "⚙️ Dokusal Deformasyon Matrisi", pal_green))
+            m_tex = report.get("matrix_texture", {"labels": ["Texture"], "weights": [100]})
+            st.pyplot(draw_clean_donut(m_tex["labels"], m_tex["weights"], "⚙️ Micro-Deformational Fabric", pal_green))
 
-        # ⚒️ JORC UYUMLU NUMUNE ALMA PLANI
-        st.markdown("<div class='section-header'>⚒️ JORC / NI 43-101 Standartlarında Örnekleme ve Kanal Numunesi Kılavuzu</div>", unsafe_allow_html=True)
+        # ⚒️ JORC COMPLIANT SAMPLING PLAN
+        st.markdown("<div class='section-header'>⚒️ JORC / NI 43-101 Standardized Sampling & QA/QC Protocols</div>", unsafe_allow_html=True)
         for sample in report.get("sampling_strategy", []):
             st.markdown(f"""
             <div class='sample-card'>
-                📍 <strong>Lokasyon / Hedef Hat:</strong> {sample.get('location')} <br>
-                🛠 "Örnekleme Metodu & Kesintisiz Metraj Planı:" <span style='color:#059669; font-weight:700;'>{sample.get('method')}</span> <br>
-                ❓ <strong>Uluslararası Standart Gerekçesi & QA/QC Protokolü:</strong> {sample.get('reason')}
+                📍 **Target Location / Interval:** {sample.get('location')} <br>
+                **🛠 Sampling Methodology & Continuous Meterage:** <span style='color:#059669; font-weight:700;'>{sample.get('method')}</span> <br>
+                **❓ International Resource Compliance Justification:** {sample.get('reason')}
             </div>
             """, unsafe_allow_html=True)
 
-        # 📦 DİNAMİK 3B HACİMSEL GRİD MODELLEME
-        st.markdown("<div class='section-header'>📦 Sahadaki Gerçek Damar Geometrisine Göre Şekillenen 3B Arama Uzayı</div>", unsafe_allow_html=True)
+        # 📦 DYNAMIC 3D DRILL GRID MODELING
+        st.markdown("<div class='section-header'>📦 3D Exploration Subspace Shaped by Field Vein Geometry</div>", unsafe_allow_html=True)
         
         drills = report.get("drill_program", [])
         v_geo = report.get("vein_geometry", {"dip": -60, "strike": 45})
@@ -282,7 +282,7 @@ with right_panel:
         X, Y = np.meshgrid(xs, ys)
         Z = -(X * np.tan(np.radians(v_dip))) * 0.5
         
-        fig_3d.add_trace(go.Surface(x=X, y=Y, z=Z, colorscale='YlOrRd', opacity=0.22, showscale=False, name="Damar Geometrisi"))
+        fig_3d.add_trace(go.Surface(x=X, y=Y, z=Z, colorscale='YlOrRd', opacity=0.22, showscale=False, name="Vein Target"))
         
         drill_colors = ['#1d4ed8', '#b91c1c', '#047857', '#7c3aed', '#d97706']
         for i, d in enumerate(drills):
@@ -306,12 +306,12 @@ with right_panel:
             ))
             
         fig_3d.update_layout(
-            scene=dict(xaxis_title='Doğu (East - m)', yaxis_title='Kuzey (North - m)', zaxis_title='Derinlik (Elev - m)', zaxis=dict(range=[-650, 50])),
+            scene=dict(xaxis_title='East (m)', yaxis_title='North (m)', zaxis_title='Elevation (m)', zaxis=dict(range=[-650, 50])),
             margin=dict(l=0, r=0, b=0, t=0), height=500
         )
         st.plotly_chart(fig_3d, use_container_width=True)
         
-        # 📋 KOORDİNAT TABLOSU VE VERİ İNDİRME MOTORU (EXPORT)
+        # 📋 COORDINATE TABLE & EXPORT MOTOR
         df_drills = pd.DataFrame(drills)
         st.dataframe(df_drills[["hole_id", "east", "north", "azimuth", "dip", "depth", "target_reason"]], use_container_width=True)
         
@@ -320,46 +320,44 @@ with right_panel:
         
         down_col1, down_col2 = st.columns(2)
         with down_col1:
-            st.download_button("📥 SONDAJ PLANI EXCEL (CSV) DOSYASINI İNDİR", data=csv_bytes, file_name="saha_sondaj_plani.csv", mime="text/csv", use_container_width=True)
+            st.download_button("📥 EXPORT DRILL HOLE PROGRAM (CSV)", data=csv_bytes, file_name="exploration_drill_program.csv", mime="text/csv", use_container_width=True)
         with down_col2:
-            st.download_button("📥 TÜM TEKNİK JEOLOJİ RAPORUNU JSON OLARAK İNDİR", data=json_bytes, file_name="saha_teknik_raporu.json", mime="application/json", use_container_width=True)
+            st.download_button("📥 DOWNLOAD COMPLETE GEOLOGICAL REPORT (JSON)", data=json_bytes, file_name="geological_technical_report.json", mime="application/json", use_container_width=True)
 
-        # 📐 PROFIL KESİT ÇİZİMİ - ETİKET ÇAKIŞMALARI MATEMATİKSEL OLARAK ENGELLENDİ
-        st.markdown("<div class='section-header'>📐 Profesyonel Jeolojik Enine Kesit Haritası</div>", unsafe_allow_html=True)
+        # 📐 CROSS SECTION ENGINE
+        st.markdown("<div class='section-header'>📐 Professional Geological Cross-Section Profile</div>", unsafe_allow_html=True)
         fig_section, ax_sec = plt.subplots(figsize=(12, 5.5))
         ax_sec.set_facecolor('#f8fafc')
         
-        ax_sec.add_patch(patches.Polygon([[0,-650], [380,-650], [200,0], [0,0]], color='#cbd5e1', hatch='//', label='Taban Bloğu (Footwall Unitesi)'))
-        ax_sec.add_patch(patches.Polygon([[380,-650], [1000,-650], [1000,0], [200,0]], color='#94a3b8', hatch='..', label='Tavan Bloğu (Hanging Wall Altere Halo)'))
-        ax_sec.plot([200, 380], [0, -650], color='#dc2626', linestyle='--', linewidth=3, label='Ana Makaslama Aksı / Fay Düzlemi')
-        ax_sec.fill_between([200, 240, 420, 380], [0, 0, -650, -650], color='#f59e0b', alpha=0.4, label='Modellenen Cevherli Damar (Target)')
+        ax_sec.add_patch(patches.Polygon([[0,-650], [380,-650], [200,0], [0,0]], color='#cbd5e1', hatch='//', label='Footwall Unit'))
+        ax_sec.add_patch(patches.Polygon([[380,-650], [1000,-650], [1000,0], [200,0]], color='#94a3b8', hatch='..', label='Hanging Wall Alteration Halo'))
+        ax_sec.plot([200, 380], [0, -650], color='#dc2626', linestyle='--', linewidth=3, label='Main Shear Axis / Fault Plane')
+        ax_sec.fill_between([200, 240, 420, 380], [0, 0, -650, -650], color='#f59e0b', alpha=0.4, label='Modeled Mineralized Vein Target')
         
-        # YAZI ÇAKIŞMASINI ÖNLEYEN MATEMATİKSEL SEPARASYON ALGORİTMASI
+        # Non-Overlapping Graphical Text Separation Algorithm
         for i, d in enumerate(drills):
-            # Her sondajın başlangıç noktasını görsel netlik adına X ekseninde dağıtıyoruz
             e = 80 + (i * 110) if i < 3 else 420 + ((i-3)*130)
             depth = d.get("depth", 350)
             dip_rad = np.radians(d.get("dip", -60))
             dx = depth * np.cos(dip_rad)
             dy = depth * np.sin(dip_rad)
             
-            ax_sec.plot([e, e + dx], [0, dy], color=drill_colors[i % len(drill_colors)], linewidth=3, marker='v', label=f"Sondaj: {d.get('hole_id')}")
+            ax_sec.plot([e, e + dx], [0, dy], color=drill_colors[i % len(drill_colors)], linewidth=3, marker='v', label=f"Hole: {d.get('hole_id')}")
             
-            # Yazıların Y ekseninde çakışmaması için basamaklı (alternating) yükseklik ataması
             label_y_pos = 18 if i % 2 == 0 else 42
             ax_sec.text(e, label_y_pos, d.get("hole_id"), fontsize=9, fontweight='bold', ha='center', color='#0f172a', clip_on=False)
 
         ax_sec.set_xlim(0, 1000)
         ax_sec.set_ylim(-650, 70)
-        ax_sec.set_xlabel("Mesafe Doğu (Metre)", fontsize=10, fontweight='bold')
-        ax_sec.set_ylabel("Derinlik / Kot (Metre)", fontsize=10, fontweight='bold')
+        ax_sec.set_xlabel("Distance Easting (Meters)", fontsize=10, fontweight='bold')
+        ax_sec.set_ylabel("Depth / Elevation (Meters)", fontsize=10, fontweight='bold')
         ax_sec.grid(True, linestyle=':', alpha=0.5, color='#cbd5e1')
         ax_sec.legend(loc='lower right', fontsize=8.5, facecolor='white', framealpha=0.95)
         plt.tight_layout()
         st.pyplot(fig_section)
 
-        # 💼 YÖNETİCİ ÖZETİ
-        st.markdown("<div class='section-header'>💼 Kurumsal Risk & Ekonomik Değerlendirme Yönetici Özeti</div>", unsafe_allow_html=True)
+        # 💼 EXECUTIVE SUMMARY
+        st.markdown("<div class='section-header'>💼 Corporate Risk & Economic Evaluation Executive Summary</div>", unsafe_allow_html=True)
         st.markdown(f"<div style='background:#1e293b; color:#f8fafc; padding:25px; border-radius:12px; font-size:1rem; line-height:1.8;'>{report.get('executive_summary')}</div>", unsafe_allow_html=True)
         
         st.markdown("</div>", unsafe_allow_html=True)
